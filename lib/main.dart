@@ -28,3 +28,6 @@ void main() {
 // kn okay , tu anu access tari pase j rakhis ke psi e change kari nakhu error slove thay psi ?
 // aa project math_pzl nu j mari pase rese baki tu je new upload kare anu ny hoi atle anu revade je
 // okay 👍
+
+
+// have jo hu github ma change akru chu but e tara android studio ma ny ave jya sudhi tu pull ny kare tya sudhi
