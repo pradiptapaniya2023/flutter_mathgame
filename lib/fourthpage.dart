@@ -10,9 +10,6 @@ class Fourth_Page extends StatefulWidget {
   }
 }
 
-class StatefulWidget {
-}
-
 class State_Fourth_Page extends State<Fourth_Page> {
   int levelPerPage = 28;
   int totalLevel = 75;
@@ -31,7 +28,7 @@ class State_Fourth_Page extends State<Fourth_Page> {
 
     setState(() {
       levelState = sp!.getStringList('levelState') ??
-          List.generate(totalLevel , (index) => "lock");
+          List.generate(totalLevel, (index) => "lock");
     });
   }
 
@@ -87,7 +84,7 @@ class State_Fourth_Page extends State<Fourth_Page> {
                         crossAxisCount: 4),
                     itemCount: pageViewList[pageIndex].length,
                     itemBuilder: (context, gridIndex) {
-                      int levelNum = pageViewList[pageIndex][gridIndex] ;
+                      int levelNum = pageViewList[pageIndex][gridIndex];
                       String state = levelState[levelNum - 1];
 
                       return (Container(
@@ -116,7 +113,7 @@ class State_Fourth_Page extends State<Fourth_Page> {
                               child: Center(
                                 child: state == "clear" || state == "skip"
                                     ? Text(
-                                        ' ${ pageViewList[pageIndex][gridIndex] } ',
+                                        ' ${pageViewList[pageIndex][gridIndex]} ',
                                         style: TextStyle(
                                             color: Colors.grey[700],
                                             fontFamily: 'mathGameFont',

@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/widgets.dart';
-import 'secondpage.dart';
-import 'fourthpage.dart';
-
-import 'fourthpage.dart';
+import 'package:flutter/widgets.dart';
+import 'package:mathgame/secondpage.dart';
+import 'package:mathgame/fourthpage.dart';
 
 class First_Page extends StatefulWidget {
   @override
