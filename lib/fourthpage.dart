@@ -10,6 +10,9 @@ class Fourth_Page extends StatefulWidget {
   }
 }
 
+class StatefulWidget {
+}
+
 class State_Fourth_Page extends State<Fourth_Page> {
   int levelPerPage = 28;
   int totalLevel = 75;
