@@ -6,7 +6,4 @@ void main() {
     home: First_Page(),
   ));
 }
-// hello
-// pt
-// hello
 
