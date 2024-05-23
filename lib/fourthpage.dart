@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mathgame/secondpage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Fourth_Page extends StatefulWidget {
   @override
@@ -13,32 +12,14 @@ class Fourth_Page extends StatefulWidget {
 class State_Fourth_Page extends State<Fourth_Page> {
   int levelPerPage = 28;
   int totalLevel = 75;
-  SharedPreferences? sp;
-  List levelState = [];
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getSP();
-  }
-
-  Future<void> getSP() async {
-    sp = await SharedPreferences.getInstance();
-
-    setState(() {
-      levelState = sp!.getStringList('levelState') ??
-          List.generate(totalLevel, (index) => "lock");
-    });
-  }
 
   List pageViewFun(int levelPerPage, int totalLevel) {
     List startingLevelList = List.generate(totalLevel, (index) => index + 1);
     List showLevelNumber = [];
 
     for (int i = 0; i < totalLevel; i = i + levelPerPage) {
-      showLevelNumber.add(startingLevelList.sublist(
-          i, (i + levelPerPage < totalLevel) ? i + levelPerPage : totalLevel));
+      int end = (i + levelPerPage < totalLevel) ? i + levelPerPage : totalLevel;
+      showLevelNumber.add(startingLevelList.sublist(i, end));
     }
 
     return showLevelNumber;
@@ -84,8 +65,9 @@ class State_Fourth_Page extends State<Fourth_Page> {
                         crossAxisCount: 4),
                     itemCount: pageViewList[pageIndex].length,
                     itemBuilder: (context, gridIndex) {
-                      int levelNum = pageViewList[pageIndex][gridIndex];
-                      String state = levelState[levelNum - 1];
+                      int level = pageViewList[pageIndex][gridIndex];
+                      int currentLevel = Second_Page.levelNum;
+                      String state = Second_Page.levelStateList[level - 1];
 
                       return (Container(
                         margin: EdgeInsets.all(5),
@@ -97,9 +79,7 @@ class State_Fourth_Page extends State<Fourth_Page> {
                         ),
                         child: Center(
                           child: InkWell(
-                            onDoubleTap: () {
-                              // winingFun();
-                            },
+                            onDoubleTap: () {},
                             child: Container(
                               height: 65,
                               width: 65,
@@ -108,12 +88,14 @@ class State_Fourth_Page extends State<Fourth_Page> {
                                       image: AssetImage(state == "clear"
                                           ? "asset/images/tick.png"
                                           : (state == "skip"
-                                              ? ""
+                                              ? " "
                                               : "asset/images/lock.png")))),
                               child: Center(
-                                child: state == "clear" || state == "skip"
+                                child: currentLevel == level ||
+                                        state == "clear" ||
+                                        state == "skip"
                                     ? Text(
-                                        ' ${pageViewList[pageIndex][gridIndex]} ',
+                                        ' ${pageViewList[pageIndex][gridIndex]}',
                                         style: TextStyle(
                                             color: Colors.grey[700],
                                             fontFamily: 'mathGameFont',

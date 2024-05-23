@@ -7,6 +7,7 @@ import 'thirdpage.dart';
 class Second_Page extends StatefulWidget {
   static int levelNum = 1;
   static TextEditingController controller = TextEditingController();
+  static List<String> levelStateList = [];
 
   @override
   State<StatefulWidget> createState() {
@@ -23,7 +24,6 @@ class State_Second_Page extends State<Second_Page> {
   }
 
   SharedPreferences? sp;
-  List btnNumberList = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
   List trueAns = [
     "10",
     "25",
@@ -102,7 +102,6 @@ class State_Second_Page extends State<Second_Page> {
     "8"
   ];
   String textFiledAns = "";
-  List<String> levelStateList = [];
 
   void submitCheck() {
     textFiledAns = Second_Page.controller.text;
@@ -155,17 +154,18 @@ class State_Second_Page extends State<Second_Page> {
   }
 
   Future<void> updateLevelCheck(String s) async {
-    // sp = await SharedPreferences.getInstance();
-    levelStateList =
+    sp = await SharedPreferences.getInstance();
+
+    Second_Page.levelStateList =
         sp!.getStringList('levelState') ?? List.generate(75, (index) => "lock");
-    levelStateList[Second_Page.levelNum - 1] = s;
+    Second_Page.levelStateList[Second_Page.levelNum - 1] = s;
     print(
-        '==secondpage level state ${levelStateList[Second_Page.levelNum - 1] = s}');
+        '==secondpage level state ${Second_Page.levelStateList[Second_Page.levelNum - 1] = s}');
 
     setState(() {
       Second_Page.levelNum++;
       sp!.setInt('indexNumberSet', Second_Page.levelNum);
-      sp!.setStringList('levelState', levelStateList);
+      sp!.setStringList('levelState', Second_Page.levelStateList);
     });
   }
 
@@ -384,7 +384,7 @@ class State_Second_Page extends State<Second_Page> {
                   Expanded(
                     child: GridView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: btnNumberList.length,
+                      itemCount: 10,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 1),
                       itemBuilder: (context, index) {
@@ -396,12 +396,11 @@ class State_Second_Page extends State<Second_Page> {
                           child: TextButton(
                             onPressed: () {
                               setState(() {
-                                Second_Page.controller.text +=
-                                    btnNumberList[index];
+                                Second_Page.controller.text += "${index}";
                               });
                             },
                             child: Text(
-                              btnNumberList[index],
+                              "${index}",
                               style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,

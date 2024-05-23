@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mathgame/secondpage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'firstpage.dart';
 
 class Third_Page extends StatefulWidget {
@@ -11,21 +10,6 @@ class Third_Page extends StatefulWidget {
 }
 
 class State_Third_Page extends State<Third_Page> {
-  SharedPreferences? sp;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    sharePerferenceFun();
-  }
-
-  Future<void> sharePerferenceFun() async {
-    sp = await SharedPreferences.getInstance();
-
-    Second_Page.levelNum = sp!.getInt("indexNumberSet") ?? 0;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,13 +55,16 @@ class State_Third_Page extends State<Third_Page> {
                   border: Border.all(color: Colors.black, width: 2)),
               child: TextButton(
                 onPressed: () {
-                  sp!.setInt("indexNumberSet", Second_Page.levelNum);
 
                   Navigator.push(context, MaterialPageRoute(
                     builder: (context) {
                       return Second_Page();
                     },
                   ));
+
+                  setState(() {
+                    Second_Page.controller.text = "";
+                  });
                 },
                 child: Text(
                   "Contiune",

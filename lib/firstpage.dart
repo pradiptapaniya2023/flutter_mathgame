@@ -51,6 +51,8 @@ class State_First_Page extends State<First_Page> {
                     children: [
                       TextButton(
                           onPressed: () {
+                            Second_Page.controller.text = "";
+
                             Navigator.push(context, MaterialPageRoute(
                               builder: (context) {
                                 return Second_Page();
