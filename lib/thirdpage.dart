@@ -29,7 +29,7 @@ class State_Third_Page extends State<Third_Page> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Puzzle ${Second_Page.levelNum - 1} completed",
+                    "Puzzle ${Second_Page.levelNum} completed",
                     style: TextStyle(
                         fontSize: 25,
                         color: Colors.blueAccent,

@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mathgame/secondpage.dart';
 
@@ -62,8 +61,23 @@ class State_Fourth_Page extends State<Fourth_Page> {
                     shrinkWrap: true,
                     itemCount: gridViewItemCount,
                     itemBuilder: (context, gridIndex) {
-                      int currentLevel = Second_Page.levelNum;
-                      int pageStartingIndex = startIndex + gridIndex;
+                      int currentLevel = Second_Page.levelNum + 1;
+                      int pageStartingIndex = startIndex + gridIndex - 1;
+
+                      if (pageStartingIndex >=
+                          Second_Page.levelStateList.length) {
+                        return Container(
+                          height: 60,
+                          width: 60,
+                          child: Center(
+                            child: Text(
+                              'Out of range',
+                              style: TextStyle(fontFamily: 'mathGameFont'),
+                            ),
+                          ),
+                        );
+                      }
+
                       String state =
                           Second_Page.levelStateList[pageStartingIndex];
 
@@ -84,17 +98,21 @@ class State_Fourth_Page extends State<Fourth_Page> {
                                 width: 65,
                                 decoration: BoxDecoration(
                                     image: DecorationImage(
-                                        image: AssetImage(state == "clear"
+                                        image: AssetImage(Second_Page
+                                                    .levelStateList ==
+                                                "clear"
                                             ? "asset/images/tick.png"
-                                            : (state == "skip" ||
+                                            : (Second_Page.levelStateList ==
+                                                        "skip" ||
                                                     currentLevel ==
                                                         gridIndex + 1
                                                 ? ""
                                                 : "asset/images/lock.png")))),
                                 child: Center(
                                   child: currentLevel == gridIndex + 1 ||
-                                          state == "clear" ||
-                                          state == "skip"
+                                          Second_Page.levelStateList ==
+                                              "clear" ||
+                                          Second_Page.levelStateList == "skip"
                                       ? Text(
                                           ' ${gridIndex + 1}',
                                           style: TextStyle(

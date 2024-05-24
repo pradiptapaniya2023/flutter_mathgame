@@ -5,9 +5,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'thirdpage.dart';
 
 class Second_Page extends StatefulWidget {
-  static int levelNum = 1;
+  static int levelNum = 0;
   static TextEditingController controller = TextEditingController();
-  static List<String> levelStateList = [];
+  static List levelStateList = [];
+  static String lock = "lock";
+  static String skip = "skip";
+  static String clear = "clear";
 
   @override
   State<StatefulWidget> createState() {
@@ -106,14 +109,20 @@ class State_Second_Page extends State<Second_Page> {
   void submitCheck() {
     textFiledAns = Second_Page.controller.text;
 
-    if (textFiledAns == trueAns[Second_Page.levelNum - 1]) {
-      updateLevelCheck("clear");
+    if (textFiledAns == trueAns[Second_Page.levelNum]) {
+      sp!.setString('levelStatusKey${Second_Page.levelNum}', Second_Page.clear);
+
+      setState(() {
+        Second_Page.levelNum++;
+      });
+      sp!.setInt('indexNumberSet', Second_Page.levelNum);
+
       Navigator.push(context, MaterialPageRoute(
         builder: (context) {
           return Third_Page();
         },
       ));
-    } else if (textFiledAns != trueAns[Second_Page.levelNum - 1]) {
+    } else if (textFiledAns != trueAns[Second_Page.levelNum]) {
       showDialog(
           context: context,
           builder: (context) {
@@ -149,31 +158,29 @@ class State_Second_Page extends State<Second_Page> {
   }
 
   void skipLevel() {
-    updateLevelCheck("skip");
-    Navigator.pop(context);
-  }
-
-  Future<void> updateLevelCheck(String s) async {
-    sp = await SharedPreferences.getInstance();
-
-    Second_Page.levelStateList =
-        sp!.getStringList('levelState') ?? List.generate(75, (index) => "lock");
-    Second_Page.levelStateList[Second_Page.levelNum - 1] = s;
-    print(
-        '==secondpage level state ${Second_Page.levelStateList[Second_Page.levelNum - 1] = s}');
+    sp?.setString('levelStatusKey${Second_Page.levelNum }', Second_Page.skip);
 
     setState(() {
       Second_Page.levelNum++;
-      sp!.setInt('indexNumberSet', Second_Page.levelNum);
-      sp!.setStringList('levelState', Second_Page.levelStateList);
     });
+    sp!.setInt('indexNumberSet', Second_Page.levelNum);
+    Navigator.pop(context);
   }
 
   Future<void> sharePerferenceFun() async {
     sp = await SharedPreferences.getInstance();
 
+    for (int i = 0; i < 5; i++) {
+      setState(() {
+        String levelStatus =
+            sp!.getString('levelStatusKey${i}') ?? Second_Page.lock;
+        Second_Page.levelStateList.add(levelStatus);
+      });
+      print('===levelStatus ${Second_Page.levelNum} = ${Second_Page.levelStateList}');
+    }
+
     setState(() {
-      Second_Page.levelNum = sp!.getInt("indexNumberSet") ?? 1;
+      Second_Page.levelNum = sp!.getInt("indexNumberSet") ?? 0;
     });
   }
 
@@ -261,7 +268,7 @@ class State_Second_Page extends State<Second_Page> {
                             fit: BoxFit.fill)),
                     child: Center(
                       child: Text(
-                        "Puzzle ${Second_Page.levelNum}",
+                        "Puzzle ${Second_Page.levelNum + 1}",
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -286,7 +293,7 @@ class State_Second_Page extends State<Second_Page> {
                 Container(
                   margin: EdgeInsets.all(15),
                   child: Image.asset(
-                    "asset/images/p${Second_Page.levelNum}.png",
+                    "asset/images/p${Second_Page.levelNum + 1}.png",
                     height: 350,
                     width: 350,
                   ),
