@@ -3,8 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mathgame/secondpage.dart';
 import 'package:mathgame/fourthpage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class First_Page extends StatefulWidget {
+  static SharedPreferences? sp;
+  static List levelStateList = [];
+  static String lock = "lock";
+  static String skip = "skip";
+  static String clear = "clear";
+
   @override
   State<StatefulWidget> createState() {
     return State_First_Page();
@@ -12,6 +19,32 @@ class First_Page extends StatefulWidget {
 }
 
 class State_First_Page extends State<First_Page> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    sharePerferenceFun();
+  }
+
+  Future<void> sharePerferenceFun() async {
+    First_Page.sp = await SharedPreferences.getInstance();
+
+    First_Page.levelStateList.clear();
+    for (int i = 0; i < 75; i++) {
+      setState(() {
+        String levelStatus =
+            First_Page.sp!.getString('levelStatusKey${i}') ?? First_Page.lock;
+        First_Page.levelStateList.add(levelStatus);
+      });
+      print(
+          '===levelStatus ${Second_Page.levelNum} = ${First_Page.levelStateList}');
+    }
+
+    setState(() {
+      Second_Page.levelNum = First_Page.sp!.getInt("indexNumberSet") ?? 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

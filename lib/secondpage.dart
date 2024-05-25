@@ -1,16 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mathgame/firstpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'thirdpage.dart';
 
 class Second_Page extends StatefulWidget {
   static int levelNum = 0;
   static TextEditingController controller = TextEditingController();
-  static List levelStateList = [];
-  static String lock = "lock";
-  static String skip = "skip";
-  static String clear = "clear";
 
   @override
   State<StatefulWidget> createState() {
@@ -20,13 +17,6 @@ class Second_Page extends StatefulWidget {
 
 class State_Second_Page extends State<Second_Page> {
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    sharePerferenceFun();
-  }
-
-  SharedPreferences? sp;
   List trueAns = [
     "10",
     "25",
@@ -110,12 +100,13 @@ class State_Second_Page extends State<Second_Page> {
     textFiledAns = Second_Page.controller.text;
 
     if (textFiledAns == trueAns[Second_Page.levelNum]) {
-      sp!.setString('levelStatusKey${Second_Page.levelNum}', Second_Page.clear);
+
+      First_Page.sp!.setString('levelStatusKey${Second_Page.levelNum}', First_Page.clear);
 
       setState(() {
         Second_Page.levelNum++;
       });
-      sp!.setInt('indexNumberSet', Second_Page.levelNum);
+      First_Page.sp!.setInt('indexNumberSet', Second_Page.levelNum);
 
       Navigator.push(context, MaterialPageRoute(
         builder: (context) {
@@ -158,31 +149,16 @@ class State_Second_Page extends State<Second_Page> {
   }
 
   void skipLevel() {
-    sp?.setString('levelStatusKey${Second_Page.levelNum }', Second_Page.skip);
+    First_Page.sp?.setString('levelStatusKey${Second_Page.levelNum}', First_Page.skip);
 
     setState(() {
       Second_Page.levelNum++;
     });
-    sp!.setInt('indexNumberSet', Second_Page.levelNum);
+    First_Page.sp!.setInt('indexNumberSet', Second_Page.levelNum);
     Navigator.pop(context);
   }
 
-  Future<void> sharePerferenceFun() async {
-    sp = await SharedPreferences.getInstance();
 
-    for (int i = 0; i < 5; i++) {
-      setState(() {
-        String levelStatus =
-            sp!.getString('levelStatusKey${i}') ?? Second_Page.lock;
-        Second_Page.levelStateList.add(levelStatus);
-      });
-      print('===levelStatus ${Second_Page.levelNum} = ${Second_Page.levelStateList}');
-    }
-
-    setState(() {
-      Second_Page.levelNum = sp!.getInt("indexNumberSet") ?? 0;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
