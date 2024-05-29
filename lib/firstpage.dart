@@ -37,13 +37,15 @@ class State_First_Page extends State<First_Page> {
             First_Page.sp!.getString('levelStatusKey${i}') ?? First_Page.lock;
         First_Page.levelStateList.add(levelStatus);
       });
-      print(
-          '===levelStatus ${First_Page.levelNum} = ${First_Page.levelStateList}');
+      // print(
+      //     '===levelStatus ${First_Page.levelNum} = ${First_Page.levelStateList}');
     }
 
     setState(() {
       First_Page.levelNum = First_Page.sp!.getInt("indexNumberSet") ?? 0;
     });
+
+    print("Print on FirstPage ===>  ${First_Page.levelNum}");
   }
 
   @override

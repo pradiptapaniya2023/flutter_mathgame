@@ -60,6 +60,9 @@ class State_Fourth_Page extends State<Fourth_Page> {
                     startIndex = 56;
                   }
 
+                  print("First_Page.levelNum =====>   ${First_Page.levelNum}");
+                  print("widget.levelNum =====>   ${widget.levelNum}");
+
                   return GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 4),
@@ -68,7 +71,7 @@ class State_Fourth_Page extends State<Fourth_Page> {
                       print('checkonylGridIndex = ${gridIndex}');
 
                       int currentLevel = widget.levelNum + 1;
-                      print("=currentlevel = ${currentLevel}");
+                      print('== currentlevel = ${currentLevel}');
 
                       String statePg0 = First_Page.levelStateList[gridIndex];
                       print('0 == ${First_Page.levelStateList[gridIndex]}');

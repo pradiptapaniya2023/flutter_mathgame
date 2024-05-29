@@ -109,9 +109,14 @@ class State_Second_Page extends State<Second_Page> {
       setState(() {
         widget.levelNum++;
       });
-      setState(() {
+      if (First_Page.levelNum < widget.levelNum) {
+        First_Page.levelNum = widget.levelNum;
         First_Page.sp!.setInt('indexNumberSet', widget.levelNum);
-      });
+        print("this is Second Page data ====>  widget.levelNum = ${widget.levelNum}");
+        print("this is Second Page data ====>  First_Page.levelNum = ${First_Page.levelNum}");
+      }
+      print("====> widget.levelNum --> ${widget.levelNum}");
+      print("====> First_Page.levelNum --> ${First_Page.levelNum}");
 
       Navigator.pushReplacement(context, MaterialPageRoute(
         builder: (context) {
@@ -163,8 +168,11 @@ class State_Second_Page extends State<Second_Page> {
     setState(() {
       widget.levelNum++;
     });
-    First_Page.levelNum = widget.levelNum;
-    First_Page.sp!.setInt('indexNumberSet', widget.levelNum);
+    if (First_Page.levelNum < widget.levelNum) {
+      First_Page.levelNum = widget.levelNum;
+      First_Page.sp!.setInt('indexNumberSet', widget.levelNum);
+    }
+
     Navigator.pop(context);
   }
 
