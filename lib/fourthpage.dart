@@ -4,6 +4,10 @@ import 'package:mathgame/firstpage.dart';
 import 'package:mathgame/secondpage.dart';
 
 class Fourth_Page extends StatefulWidget {
+  int levelNum;
+
+  Fourth_Page(this.levelNum);
+
   @override
   State<StatefulWidget> createState() {
     return State_Fourth_Page();
@@ -59,12 +63,12 @@ class State_Fourth_Page extends State<Fourth_Page> {
                   return GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 4),
-                    // shrinkWrap: true,
                     itemCount: gridViewItemCount,
                     itemBuilder: (context, gridIndex) {
                       print('checkonylGridIndex = ${gridIndex}');
 
-                      int currentLevel = Second_Page.levelNum + 1;
+                      int currentLevel = widget.levelNum + 1;
+                      print("=currentlevel = ${currentLevel}");
 
                       String statePg0 = First_Page.levelStateList[gridIndex];
                       print('0 == ${First_Page.levelStateList[gridIndex]}');
@@ -72,7 +76,7 @@ class State_Fourth_Page extends State<Fourth_Page> {
                       String statePg1 =
                           First_Page.levelStateList[gridIndex + startIndex];
                       print(
-                          '1 == ${First_Page.levelStateList[gridIndex + 28]}');
+                          '1 == ${First_Page.levelStateList[gridIndex + startIndex]}');
 
                       String statePg2 =
                           First_Page.levelStateList[gridIndex + startIndex];
@@ -92,7 +96,19 @@ class State_Fourth_Page extends State<Fourth_Page> {
                           ),
                           child: Center(
                             child: InkWell(
-                              onDoubleTap: () {},
+                              onDoubleTap: () {
+                                if (statePg0 == First_Page.clear ||
+                                    statePg0 == First_Page.skip ||
+                                    currentLevel == gridIndex + 1) {
+                                  Navigator.pushReplacement(context,
+                                      MaterialPageRoute(
+                                    builder: (context) {
+                                      widget.levelNum = gridIndex + startIndex;
+                                      return Second_Page(widget.levelNum);
+                                    },
+                                  ));
+                                }
+                              },
                               child: Container(
                                 height: 65,
                                 width: 65,
@@ -137,7 +153,19 @@ class State_Fourth_Page extends State<Fourth_Page> {
                           ),
                           child: Center(
                             child: InkWell(
-                              onDoubleTap: () {},
+                              onDoubleTap: () {
+                                if (statePg1 == First_Page.clear ||
+                                    statePg1 == First_Page.skip ||
+                                    currentLevel == gridIndex + 1) {
+                                  Navigator.pushReplacement(context,
+                                      MaterialPageRoute(
+                                    builder: (context) {
+                                      widget.levelNum = gridIndex + startIndex;
+                                      return Second_Page(widget.levelNum);
+                                    },
+                                  ));
+                                }
+                              },
                               child: Container(
                                 height: 65,
                                 width: 65,
@@ -170,7 +198,7 @@ class State_Fourth_Page extends State<Fourth_Page> {
                           ),
                         );
                       } else {
-                        print('===2 = ${[gridIndex + startIndex]}');
+                        print('===2 = ${gridIndex + startIndex}');
                         print('\n');
 
                         return Container(
@@ -183,7 +211,19 @@ class State_Fourth_Page extends State<Fourth_Page> {
                           ),
                           child: Center(
                             child: InkWell(
-                              onDoubleTap: () {},
+                              onDoubleTap: () {
+                                if (statePg2 == First_Page.clear ||
+                                    statePg2 == First_Page.skip ||
+                                    currentLevel == gridIndex + 1) {
+                                  Navigator.pushReplacement(context,
+                                      MaterialPageRoute(
+                                    builder: (context) {
+                                      widget.levelNum = gridIndex + startIndex;
+                                      return Second_Page(widget.levelNum);
+                                    },
+                                  ));
+                                }
+                              },
                               child: Container(
                                 height: 65,
                                 width: 65,

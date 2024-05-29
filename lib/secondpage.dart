@@ -6,7 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'thirdpage.dart';
 
 class Second_Page extends StatefulWidget {
-  static int levelNum = 0;
+  int levelNum;
+
+  Second_Page(this.levelNum);
+
   static TextEditingController controller = TextEditingController();
 
   @override
@@ -16,104 +19,106 @@ class Second_Page extends StatefulWidget {
 }
 
 class State_Second_Page extends State<Second_Page> {
-  @override
   List trueAns = [
-    "10",
-    "25",
-    "6",
-    "14",
-    "128",
-    "7",
-    "50",
-    "1025",
-    "100",
-    "3",
-    "212",
-    "3011",
-    "14",
-    "16",
     "1",
     "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "29",
+    "30",
+    "31",
+    "32",
+    "33",
+    "34",
+    "35",
+    "36",
+    "37",
+    "38",
+    "39",
+    "40",
+    "41",
+    "42",
+    "43",
     "44",
     "45",
-    "625",
-    "1",
-    "13",
+    "46",
     "47",
-    "50",
-    "34",
-    "6",
-    "41",
-    "16",
-    "126",
-    "82",
-    "14",
-    "7",
-    "132",
-    "34",
     "48",
-    "42",
-    "288",
-    "45",
-    "4",
-    "111",
-    "47",
-    "27",
-    "87",
-    "22",
-    "253",
-    "12",
-    "38",
-    "178",
-    "1",
-    "6",
-    "10",
-    "2",
-    "20",
-    "7",
-    "511",
-    "143547",
-    "84",
-    "11",
-    "27",
-    "3",
-    "5",
-    "39",
-    "31",
-    "10",
-    "130",
-    "22",
-    "3",
-    "14",
-    "42",
-    "164045",
-    "11",
-    "481",
-    "86",
-    "84",
-    "13",
-    "8"
+    "49",
+    "50",
+    "51",
+    "52",
+    "53",
+    "54",
+    "55",
+    "56",
+    "57",
+    "58",
+    "59",
+    "60",
+    "61",
+    "62",
+    "63",
+    "64",
+    "65",
+    "66",
+    "67",
+    "68",
+    "69",
+    "70",
+    "71",
+    "72",
+    "73",
+    "74",
+    "75",
   ];
   String textFiledAns = "";
 
   void submitCheck() {
     textFiledAns = Second_Page.controller.text;
 
-    if (textFiledAns == trueAns[Second_Page.levelNum]) {
-
-      First_Page.sp!.setString('levelStatusKey${Second_Page.levelNum}', First_Page.clear);
+    if (textFiledAns == trueAns[widget.levelNum]) {
+      First_Page.sp!
+          .setString('levelStatusKey${widget.levelNum}', First_Page.clear);
+      First_Page.levelStateList[widget.levelNum] = First_Page.clear;
 
       setState(() {
-        Second_Page.levelNum++;
+        widget.levelNum++;
       });
-      First_Page.sp!.setInt('indexNumberSet', Second_Page.levelNum);
+      setState(() {
+        First_Page.sp!.setInt('indexNumberSet', widget.levelNum);
+      });
 
-      Navigator.push(context, MaterialPageRoute(
+      Navigator.pushReplacement(context, MaterialPageRoute(
         builder: (context) {
-          return Third_Page();
+          return Third_Page(widget.levelNum);
         },
       ));
-    } else if (textFiledAns != trueAns[Second_Page.levelNum]) {
+    } else if (textFiledAns != trueAns[widget.levelNum]) {
       showDialog(
           context: context,
           builder: (context) {
@@ -149,16 +154,19 @@ class State_Second_Page extends State<Second_Page> {
   }
 
   void skipLevel() {
-    First_Page.sp?.setString('levelStatusKey${Second_Page.levelNum}', First_Page.skip);
+    if (First_Page.levelStateList[widget.levelNum] != First_Page.clear) {
+      First_Page.sp
+          ?.setString('levelStatusKey${widget.levelNum}', First_Page.skip);
+      First_Page.levelStateList[widget.levelNum] = First_Page.skip;
+    }
 
     setState(() {
-      Second_Page.levelNum++;
+      widget.levelNum++;
     });
-    First_Page.sp!.setInt('indexNumberSet', Second_Page.levelNum);
+    First_Page.levelNum = widget.levelNum;
+    First_Page.sp!.setInt('indexNumberSet', widget.levelNum);
     Navigator.pop(context);
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -244,7 +252,7 @@ class State_Second_Page extends State<Second_Page> {
                             fit: BoxFit.fill)),
                     child: Center(
                       child: Text(
-                        "Puzzle ${Second_Page.levelNum + 1}",
+                        "Puzzle ${widget.levelNum + 1}",
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -269,7 +277,7 @@ class State_Second_Page extends State<Second_Page> {
                 Container(
                   margin: EdgeInsets.all(15),
                   child: Image.asset(
-                    "asset/images/p${Second_Page.levelNum + 1}.png",
+                    "asset/images/p${widget.levelNum + 1}.png",
                     height: 350,
                     width: 350,
                   ),

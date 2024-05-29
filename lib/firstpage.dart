@@ -6,6 +6,7 @@ import 'package:mathgame/fourthpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class First_Page extends StatefulWidget {
+  static int levelNum = 0;
   static SharedPreferences? sp;
   static List levelStateList = [];
   static String lock = "lock";
@@ -37,11 +38,11 @@ class State_First_Page extends State<First_Page> {
         First_Page.levelStateList.add(levelStatus);
       });
       print(
-          '===levelStatus ${Second_Page.levelNum} = ${First_Page.levelStateList}');
+          '===levelStatus ${First_Page.levelNum} = ${First_Page.levelStateList}');
     }
 
     setState(() {
-      Second_Page.levelNum = First_Page.sp!.getInt("indexNumberSet") ?? 0;
+      First_Page.levelNum = First_Page.sp!.getInt("indexNumberSet") ?? 0;
     });
   }
 
@@ -88,7 +89,7 @@ class State_First_Page extends State<First_Page> {
 
                             Navigator.push(context, MaterialPageRoute(
                               builder: (context) {
-                                return Second_Page();
+                                return Second_Page(First_Page.levelNum);
                               },
                             ));
                           },
@@ -109,7 +110,7 @@ class State_First_Page extends State<First_Page> {
                           onPressed: () {
                             Navigator.push(context, MaterialPageRoute(
                               builder: (context) {
-                                return Fourth_Page();
+                                return Fourth_Page(First_Page.levelNum);
                               },
                             ));
                           },

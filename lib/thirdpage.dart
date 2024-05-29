@@ -3,6 +3,10 @@ import 'package:mathgame/secondpage.dart';
 import 'firstpage.dart';
 
 class Third_Page extends StatefulWidget {
+  int levelNum;
+
+  Third_Page(this.levelNum);
+
   @override
   State<StatefulWidget> createState() {
     return State_Third_Page();
@@ -10,7 +14,6 @@ class Third_Page extends StatefulWidget {
 }
 
 class State_Third_Page extends State<Third_Page> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +32,7 @@ class State_Third_Page extends State<Third_Page> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Puzzle ${Second_Page.levelNum} completed",
+                    "Puzzle ${widget.levelNum} completed",
                     style: TextStyle(
                         fontSize: 25,
                         color: Colors.blueAccent,
@@ -55,10 +58,9 @@ class State_Third_Page extends State<Third_Page> {
                   border: Border.all(color: Colors.black, width: 2)),
               child: TextButton(
                 onPressed: () {
-
                   Navigator.push(context, MaterialPageRoute(
                     builder: (context) {
-                      return Second_Page();
+                      return Second_Page(widget.levelNum);
                     },
                   ));
 
@@ -85,7 +87,7 @@ class State_Third_Page extends State<Third_Page> {
                   border: Border.all(color: Colors.black, width: 2)),
               child: TextButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(
+                  Navigator.pushReplacement(context, MaterialPageRoute(
                     builder: (context) {
                       return First_Page();
                     },
