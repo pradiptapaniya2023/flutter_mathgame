@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mathgame/firstpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -97,6 +98,7 @@ class State_Second_Page extends State<Second_Page> {
     "75",
   ];
   String textFiledAns = "";
+  int skipCounter = 0;
 
   void submitCheck() {
     textFiledAns = Second_Page.controller.text;
@@ -112,8 +114,10 @@ class State_Second_Page extends State<Second_Page> {
       if (First_Page.levelNum < widget.levelNum) {
         First_Page.levelNum = widget.levelNum;
         First_Page.sp!.setInt('indexNumberSet', widget.levelNum);
-        print("this is Second Page data ====>  widget.levelNum = ${widget.levelNum}");
-        print("this is Second Page data ====>  First_Page.levelNum = ${First_Page.levelNum}");
+        print(
+            "this is Second Page data ====>  widget.levelNum = ${widget.levelNum}");
+        print(
+            "this is Second Page data ====>  First_Page.levelNum = ${First_Page.levelNum}");
       }
       print("====> widget.levelNum --> ${widget.levelNum}");
       print("====> First_Page.levelNum --> ${First_Page.levelNum}");
@@ -165,15 +169,78 @@ class State_Second_Page extends State<Second_Page> {
       First_Page.levelStateList[widget.levelNum] = First_Page.skip;
     }
 
-    setState(() {
-      widget.levelNum++;
-    });
     if (First_Page.levelNum < widget.levelNum) {
       First_Page.levelNum = widget.levelNum;
       First_Page.sp!.setInt('indexNumberSet', widget.levelNum);
     }
 
-    Navigator.pop(context);
+    if (skipCounter < 1) {
+      setState(() {
+        widget.levelNum++;
+        print('=== secondpage widget.levelNum++ =  ${widget.levelNum}');
+      });
+    }
+
+    skipCounter++;
+    // First_Page.sp!.setInt('levelStatusKey${widget.levelNum}', skipCounter);
+    print('secondpage skipCounter++ = ${skipCounter}');
+  }
+
+  void showHintFun() {
+    print('===hint function enter');
+    int hintIndex = widget.levelNum ;
+    print('===hint function hintIndex = ${hintIndex}');
+    String hintAns = trueAns[hintIndex];
+    print('===hint funtction hintAns = ${hintAns}');
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Container(
+            height: 150,
+            width: 150,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+            child: Column(
+              children: [
+                Text(
+                  'Hint !',
+                  style: TextStyle(
+                      fontFamily: 'mathGameFont',
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 45,
+                ),
+                Center(
+                  child: Text(
+                    '$hintAns',
+                    style: TextStyle(
+                        fontFamily: 'mathGameFont',
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold),
+                  ),
+                )
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'OKAY!',
+                  style: TextStyle(
+                      fontFamily: 'mathGameFont',
+                      color: Colors.pink,
+                      fontWeight: FontWeight.bold),
+                ))
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -196,54 +263,93 @@ class State_Second_Page extends State<Second_Page> {
                       margin: EdgeInsets.all(5),
                       child: InkWell(
                           onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  content: Container(
-                                    height: 150,
-                                    width: 400,
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    child: Text(
-                                      '''Are you sure want to skip this level ? you can play skipped leves late by clicking on PUZZLES menu from main screen''',
-                                      style: TextStyle(
-                                          fontFamily: 'mathGameFont',
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20),
+                            if (skipCounter == 0) {
+                              print('===secondpage first if = ${skipCounter}');
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    content: Container(
+                                      height: 150,
+                                      width: 400,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: Text(
+                                        '''Are you sure want to skip this level ? you can play skipped leves late by clicking on PUZZLES menu from main screen''',
+                                        style: TextStyle(
+                                            fontFamily: 'mathGameFont',
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      ),
                                     ),
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                        onPressed: () {
-                                          setState(() {
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              Navigator.pop(context);
+                                            });
+                                          },
+                                          child: Text(
+                                            'CANCEL',
+                                            style: TextStyle(
+                                                fontFamily: 'mathGameFont',
+                                                color: Colors.pink,
+                                                fontWeight: FontWeight.bold),
+                                          )),
+                                      TextButton(
+                                          onPressed: () {
+                                            skipLevel();
                                             Navigator.pop(context);
-                                          });
-                                        },
-                                        child: Text(
-                                          'CANCEL',
-                                          style: TextStyle(
-                                              fontFamily: 'mathGameFont',
-                                              color: Colors.pink,
-                                              fontWeight: FontWeight.bold),
-                                        )),
-                                    TextButton(
-                                        onPressed: () {
-                                          skipLevel();
-                                        },
-                                        child: Text(
-                                          'OKAY!',
-                                          style: TextStyle(
-                                              fontFamily: 'mathGameFont',
-                                              color: Colors.pink,
-                                              fontWeight: FontWeight.bold),
-                                        ))
-                                  ],
-                                );
-                              },
-                            );
+                                          },
+                                          child: Text(
+                                            'OKAY!',
+                                            style: TextStyle(
+                                                fontFamily: 'mathGameFont',
+                                                color: Colors.pink,
+                                                fontWeight: FontWeight.bold),
+                                          ))
+                                    ],
+                                  );
+                                },
+                              );
+                            } else if (skipCounter >= 1) {
+                              print('secondpage else if = ${skipCounter}');
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    content: Container(
+                                      height: 40,
+                                      width: 40,
+                                      child: Text(
+                                        'You are skip limit is over',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20,
+                                            fontFamily: 'mathGameFont'),
+                                      ),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Center(
+                                            child: Text(
+                                              'Okay',
+                                              style: TextStyle(
+                                                  fontFamily: 'mathGameFont',
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ))
+                                    ],
+                                  );
+                                },
+                              );
+                            }
                           },
                           child: Image.asset(
                             "asset/images/skip.png",
@@ -271,10 +377,15 @@ class State_Second_Page extends State<Second_Page> {
                   ),
                   Container(
                     margin: EdgeInsets.all(5),
-                    child: Image.asset(
-                      "asset/images/hint.png",
-                      height: 40,
-                      width: 40,
+                    child: InkWell(
+                      onTap: () {
+                        showHintFun();
+                      },
+                      child: Image.asset(
+                        "asset/images/hint.png",
+                        height: 40,
+                        width: 40,
+                      ),
                     ),
                   )
                 ],
